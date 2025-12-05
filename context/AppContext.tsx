@@ -15,7 +15,7 @@ interface AppContextType {
   needsSymptomCheck: boolean;
 
   setScannedFood: (food: ScannedFood | null) => void;
-  addFoodToLog: (entry: FoodLogEntry) => void;
+  addFoodToLog: (entry: FoodLogEntry, foodId?: string) => void;
   simulateScan: (isFreshProduce?: boolean, isShoppingMode?: boolean) => FoodItem;
   dismissSymptomCheck: () => void;
 }
