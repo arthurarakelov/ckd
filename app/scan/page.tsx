@@ -1,13 +1,13 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { BarcodeScanner } from '@/components/scanner/BarcodeScanner';
 import { ScanningOverlay } from '@/components/scanner/ScanningOverlay';
 import { useApp } from '@/context/AppContext';
 import { X } from 'lucide-react';
 
-export default function ScanPage() {
+function ScanPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { simulateScan } = useApp();
@@ -124,5 +124,13 @@ export default function ScanPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function ScanPage() {
+  return (
+    <Suspense fallback={<div className="fixed inset-0 bg-black flex items-center justify-center"><p className="text-white">Loading...</p></div>}>
+      <ScanPageContent />
+    </Suspense>
   );
 }
