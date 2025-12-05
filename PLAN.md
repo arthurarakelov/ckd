@@ -1,4 +1,4 @@
-# Longevia CKD Food Scanner - Implementation Plan
+# CKD Food Scanner - Implementation Plan
 
 ## Quick Start for Claude Code
 
@@ -268,7 +268,7 @@ If user goes over sodium limit:
 ### Profile (app/profile/page.tsx)
 - Blue gradient header with avatar
 - QR code icon (placeholder)
-- Cards: Longevia ID (demographics), Allergies, Medications, Health conditions
+- Cards: User ID (demographics), Allergies, Medications, Health conditions
 
 ### Scan (app/scan/page.tsx)
 - Full screen camera view
