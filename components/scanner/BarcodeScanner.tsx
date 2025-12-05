@@ -9,7 +9,7 @@ interface BarcodeScannerProps {
 
 export function BarcodeScanner({ onScan }: BarcodeScannerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isScanning, setIsScanning] = useState(false);
+  const isScanningRef = useRef(false);
   const readerRef = useRef<BrowserMultiFormatReader | null>(null);
 
   useEffect(() => {
@@ -27,14 +27,24 @@ export function BarcodeScanner({ onScan }: BarcodeScannerProps) {
           return;
         }
 
-        const selectedDeviceId = videoInputDevices[0].deviceId;
+        // Try to find the back-facing (environment) camera
+        const backCamera = videoInputDevices.find((device) =>
+          device.label.toLowerCase().includes('back') ||
+          device.label.toLowerCase().includes('environment') ||
+          device.label.toLowerCase().includes('rear')
+        );
+
+        // Use back camera if found, otherwise use the last camera (usually back on mobile)
+        const selectedDeviceId = backCamera
+          ? backCamera.deviceId
+          : videoInputDevices[videoInputDevices.length - 1].deviceId;
 
         codeReader.decodeFromVideoDevice(
           selectedDeviceId,
           videoRef.current,
           (result) => {
-            if (result && !isScanning) {
-              setIsScanning(true);
+            if (result && !isScanningRef.current) {
+              isScanningRef.current = true;
               onScan();
             }
           }
@@ -50,7 +60,7 @@ export function BarcodeScanner({ onScan }: BarcodeScannerProps) {
       // Cleanup will be handled by page navigation
       readerRef.current = null;
     };
-  }, [onScan, isScanning]);
+  }, [onScan]);
 
   return (
     <div className="relative w-full h-full">
